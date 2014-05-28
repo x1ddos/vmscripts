@@ -1,0 +1,22 @@
+server {
+    root /apps;
+    index index.html index.htm;
+
+    server_name localhost;
+
+    location / {
+        root /apps/MYAPP/dist;
+        try_files $uri $uri/ /index.html;
+    }
+
+    # location /api/ {
+    #    proxy_pass http://127.0.0.1:3000;
+    # }
+
+    location /github-push-to-deploy {
+        gzip off;
+        fastcgi_pass unix:/var/run/fcgiwrap.socket;
+        fastcgi_param SCRIPT_FILENAME $document_root/bin/github-push-to-deploy.js;
+        include fastcgi_params;
+    }
+}
